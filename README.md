@@ -193,6 +193,7 @@ dotnet clean
 
 ### 1. Dashboard Principal
 Al iniciar, verás:
+- **Home**: Desde allí puedes navegar al dashboard de tickets u oprimir el botón azul que te redirige automáticamente.
 - **4 Cards de estadísticas**: Total, Abiertos, En Progreso, Cerrados
 - **Barra de búsqueda**: Escribe para filtrar en tiempo real
 - **Botones de filtro**: Filtra por estado
@@ -234,30 +235,6 @@ Al iniciar, verás:
 - **Móvil** (< 768px): Vista apilada, modal full-screen
 
 Prueba presionando `F12` → Toggle Device Toolbar → Selecciona "iPhone 12 Pro"
-
----
-
-## 📸 Capturas de Pantalla
-
-### Vista Principal - Dashboard
-![Dashboard Principal](docs/screenshots/dashboard.png)
-*Dashboard con lista de tickets, estadísticas, búsqueda y filtros*
-
-### Filtrado por Estado
-![Filtrado por Estado](docs/screenshots/filters.png)
-*Filtros funcionando sin recargar la página*
-
-### Panel de Detalle
-![Panel de Detalle](docs/screenshots/detail-modal.png)
-*Modal lateral con información completa del ticket y botones de cambio de estado*
-
-### Cambio de Estado
-![Cambio de Estado](docs/screenshots/updating-status.png)
-*Feedback visual durante la actualización del estado (~400ms de latencia)*
-
-### Vista Móvil
-![Vista Móvil](docs/screenshots/mobile-responsive.png)
-*Diseño adaptado para dispositivos móviles*
 
 ---
 
@@ -336,29 +313,5 @@ Prueba presionando `F12` → Toggle Device Toolbar → Selecciona "iPhone 12 Pro
 
 ---
 
-## 📚 Documentación Adicional
 
-Este repositorio incluye documentación técnica detallada:
 
-- **`ARQUITECTURA_TECNICA.md`**: Explicación profunda de la arquitectura, patrones y flujo de datos
-- **`ORDEN_ARCHIVOS_PRESENTACION.md`**: Guía para presentar el proyecto técnicamente
-- **`QUICK_START.md`**: Guía rápida de inicio y comandos útiles
-- **`GUIA_VERIFICACION.md`**: Checklist completo para verificar funcionalidades
-
----
-
-## 👨‍💻 Autor
-
-**Desarrollado por**: [Tu Nombre]
-**Fecha**: Octubre 2025
-**Prueba Técnica**: Blazor - Sistema de Gestión de Tickets
-
----
-
-## 📄 Licencia
-
-Este proyecto fue desarrollado como parte de una prueba técnica y es de uso educativo.
-
----
-
-**¿Preguntas o sugerencias?** Abre un issue en este repositorio.
