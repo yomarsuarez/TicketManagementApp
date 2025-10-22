@@ -30,40 +30,12 @@
         <button class="btn-primary-home" @onclick="GoToTickets">
             Ir al Dashboard de Tickets
         </button>
-
-        <p class="auto-redirect">Redirigiendo automáticamente en @countdown segundos...</p>
     </div>
 </div>
 
 @code {
-    private int countdown = 3;
-    private System.Threading.Timer? timer;
-
-    protected override void OnInitialized()
-    {
-        timer = new System.Threading.Timer((_) =>
-        {
-            InvokeAsync(() =>
-            {
-                countdown--;
-                if (countdown <= 0)
-                {
-                    timer?.Dispose();
-                    Navigation.NavigateTo("/tickets");
-                }
-                StateHasChanged();
-            });
-        }, null, 1000, 1000);
-    }
-
     private void GoToTickets()
     {
-        timer?.Dispose();
         Navigation.NavigateTo("/tickets");
-    }
-
-    public void Dispose()
-    {
-        timer?.Dispose();
     }
 }
