@@ -322,11 +322,8 @@ FodyWeavers.xsd
 
 
 # Ignorar archivos Markdown de documentación interna
-ARQUITECTURA_TECNICA.md
-CHECKLIST_PRUEBA_TECNICA.md
-COMO_SUBIR_A_GITHUB.md
-GUIA_VERIFICACION.md
-ORDEN_ARCHIVOS_PRESENTACION.md
+*.md
+!README.md
 
 
 # Backup files
