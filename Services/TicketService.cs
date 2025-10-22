@@ -14,10 +14,10 @@ public class TicketService : ITicketService
         _environment = environment;
         _logger = logger;
         _tickets = new List<Ticket>();
-        LoadTicketsAsync().Wait();
+        LoadTickets();
     }
 
-    private async Task LoadTicketsAsync()
+    private void LoadTickets()
     {
         try
         {
@@ -31,7 +31,7 @@ public class TicketService : ITicketService
                 return;
             }
 
-            var jsonContent = await File.ReadAllTextAsync(jsonPath);
+            var jsonContent = File.ReadAllText(jsonPath);
             _tickets = JsonSerializer.Deserialize<List<Ticket>>(jsonContent) ?? new List<Ticket>();
             _logger.LogInformation($"Cargados {_tickets.Count} tickets desde el archivo JSON");
         }
