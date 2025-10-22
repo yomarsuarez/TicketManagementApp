@@ -5,8 +5,8 @@
         <input
             type="text"
             placeholder="Buscar tickets..."
-            @bind="searchText"
-            @bind:event="oninput"
+            value="@searchText"
+            @oninput="OnSearchInput"
             class="search-input" />
         <span class="search-icon">🔍</span>
     </div>
