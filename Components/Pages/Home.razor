@@ -1,7 +1,69 @@
-﻿@page "/"
+@page "/"
+@inject NavigationManager Navigation
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Sistema de Tickets - Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="home-container">
+    <div class="home-content">
+        <div class="home-icon">🎫</div>
+        <h1>Sistema de Gestión de Tickets</h1>
+        <p class="home-subtitle">Bienvenido al sistema de soporte técnico</p>
 
-Welcome to your new app.
+        <div class="home-features">
+            <div class="feature">
+                <span class="feature-icon">📋</span>
+                <h3>Ver Tickets</h3>
+                <p>Consulta todos los tickets de soporte</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔍</span>
+                <h3>Buscar y Filtrar</h3>
+                <p>Encuentra tickets por estado o búsqueda</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✏️</span>
+                <h3>Actualizar Estado</h3>
+                <p>Cambia el estado de los tickets en tiempo real</p>
+            </div>
+        </div>
+
+        <button class="btn-primary-home" @onclick="GoToTickets">
+            Ir al Dashboard de Tickets
+        </button>
+
+        <p class="auto-redirect">Redirigiendo automáticamente en @countdown segundos...</p>
+    </div>
+</div>
+
+@code {
+    private int countdown = 3;
+    private System.Threading.Timer? timer;
+
+    protected override void OnInitialized()
+    {
+        timer = new System.Threading.Timer((_) =>
+        {
+            InvokeAsync(() =>
+            {
+                countdown--;
+                if (countdown <= 0)
+                {
+                    timer?.Dispose();
+                    Navigation.NavigateTo("/tickets");
+                }
+                StateHasChanged();
+            });
+        }, null, 1000, 1000);
+    }
+
+    private void GoToTickets()
+    {
+        timer?.Dispose();
+        Navigation.NavigateTo("/tickets");
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+}
