@@ -1,0 +1,72 @@
+@using TicketManagementApp.Models
+
+<div class="ticket-list">
+    @if (Tickets == null || !Tickets.Any())
+    {
+        <div class="empty-state">
+            <span class="empty-icon">📋</span>
+            <h3>No hay tickets</h3>
+            <p>No se encontraron tickets con los filtros seleccionados</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var ticket in Tickets)
+        {
+            <div class="ticket-card" @onclick="() => SelectTicket(ticket.Id)">
+                <div class="ticket-header">
+                    <h3 class="ticket-title">@ticket.Title</h3>
+                    <span class="ticket-status status-@GetStatusClass(ticket.Status)">
+                        @ticket.Status
+                    </span>
+                </div>
+                <p class="ticket-description">@TruncateDescription(ticket.Description)</p>
+                <div class="ticket-footer">
+                    <span class="ticket-id">ID: #@ticket.Id</span>
+                    <span class="ticket-date">@FormatDate(ticket.CreatedAt)</span>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Ticket> Tickets { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<int> OnTicketSelected { get; set; }
+
+    private async Task SelectTicket(int ticketId)
+    {
+        await OnTicketSelected.InvokeAsync(ticketId);
+    }
+
+    private string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Abierto" => "open",
+            "En progreso" => "progress",
+            "Cerrado" => "closed",
+            _ => "open"
+        };
+    }
+
+    private string TruncateDescription(string description)
+    {
+        if (description.Length <= 100)
+            return description;
+        return description.Substring(0, 100) + "...";
+    }
+
+    private string FormatDate(DateTime date)
+    {
+        var timeSpan = DateTime.Now - date;
+        if (timeSpan.TotalDays < 1)
+            return $"Hace {(int)timeSpan.TotalHours}h";
+        if (timeSpan.TotalDays < 7)
+            return $"Hace {(int)timeSpan.TotalDays}d";
+        return date.ToString("dd/MM/yyyy");
+    }
+}

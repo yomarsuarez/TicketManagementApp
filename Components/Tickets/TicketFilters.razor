@@ -1,0 +1,59 @@
+@using TicketManagementApp.Models
+
+<div class="ticket-filters">
+    <div class="search-box">
+        <input
+            type="text"
+            placeholder="Buscar tickets..."
+            @bind="searchText"
+            @bind:event="oninput"
+            class="search-input" />
+        <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="filter-buttons">
+        <button
+            class="filter-btn @(selectedFilter == "Todos" ? "active" : "")"
+            @onclick="@(() => SelectFilter("Todos"))">
+            Todos
+        </button>
+        <button
+            class="filter-btn filter-open @(selectedFilter == "Abierto" ? "active" : "")"
+            @onclick="@(() => SelectFilter("Abierto"))">
+            Abiertos
+        </button>
+        <button
+            class="filter-btn filter-progress @(selectedFilter == "En progreso" ? "active" : "")"
+            @onclick="@(() => SelectFilter("En progreso"))">
+            En Progreso
+        </button>
+        <button
+            class="filter-btn filter-closed @(selectedFilter == "Cerrado" ? "active" : "")"
+            @onclick="@(() => SelectFilter("Cerrado"))">
+            Cerrados
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnFilterChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearchChanged { get; set; }
+
+    private string selectedFilter = "Todos";
+    private string searchText = "";
+
+    private async Task SelectFilter(string filter)
+    {
+        selectedFilter = filter;
+        await OnFilterChanged.InvokeAsync(filter);
+    }
+
+    private async Task OnSearchInput(ChangeEventArgs e)
+    {
+        searchText = e.Value?.ToString() ?? "";
+        await OnSearchChanged.InvokeAsync(searchText);
+    }
+}

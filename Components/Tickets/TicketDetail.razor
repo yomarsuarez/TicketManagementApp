@@ -1,0 +1,106 @@
+@using TicketManagementApp.Models
+
+<div class="modal-overlay" @onclick="Close">
+    <div class="ticket-detail-panel" @onclick:stopPropagation="true">
+        <div class="panel-header">
+            <h2>Detalle del Ticket</h2>
+            <button class="close-btn" @onclick="Close">✕</button>
+        </div>
+
+        <div class="panel-content">
+            <div class="detail-section">
+                <label class="detail-label">ID</label>
+                <p class="detail-value">#@Ticket.Id</p>
+            </div>
+
+            <div class="detail-section">
+                <label class="detail-label">Título</label>
+                <h3 class="detail-title">@Ticket.Title</h3>
+            </div>
+
+            <div class="detail-section">
+                <label class="detail-label">Descripción</label>
+                <p class="detail-description">@Ticket.Description</p>
+            </div>
+
+            <div class="detail-section">
+                <label class="detail-label">Estado Actual</label>
+                <span class="ticket-status status-@GetStatusClass(Ticket.Status)">
+                    @Ticket.Status
+                </span>
+            </div>
+
+            <div class="detail-section">
+                <label class="detail-label">Cambiar Estado</label>
+                <div class="status-buttons">
+                    <button
+                        class="status-btn status-btn-open @(Ticket.Status == "Abierto" ? "active" : "")"
+                        @onclick="@(() => ChangeStatus("Abierto"))"
+                        disabled="@(Ticket.Status == "Abierto" || isUpdating)">
+                        Abierto
+                    </button>
+                    <button
+                        class="status-btn status-btn-progress @(Ticket.Status == "En progreso" ? "active" : "")"
+                        @onclick="@(() => ChangeStatus("En progreso"))"
+                        disabled="@(Ticket.Status == "En progreso" || isUpdating)">
+                        En Progreso
+                    </button>
+                    <button
+                        class="status-btn status-btn-closed @(Ticket.Status == "Cerrado" ? "active" : "")"
+                        @onclick="@(() => ChangeStatus("Cerrado"))"
+                        disabled="@(Ticket.Status == "Cerrado" || isUpdating)">
+                        Cerrado
+                    </button>
+                </div>
+                @if (isUpdating)
+                {
+                    <p class="updating-text">Actualizando estado...</p>
+                }
+            </div>
+
+            <div class="detail-section">
+                <label class="detail-label">Fecha de Creación</label>
+                <p class="detail-value">@Ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Ticket Ticket { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<(int id, string status)> OnStatusChanged { get; set; }
+
+    private bool isUpdating = false;
+
+    private async Task Close()
+    {
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task ChangeStatus(string newStatus)
+    {
+        if (isUpdating || Ticket.Status == newStatus)
+            return;
+
+        isUpdating = true;
+        await OnStatusChanged.InvokeAsync((Ticket.Id, newStatus));
+        isUpdating = false;
+    }
+
+    private string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Abierto" => "open",
+            "En progreso" => "progress",
+            "Cerrado" => "closed",
+            _ => "open"
+        };
+    }
+}

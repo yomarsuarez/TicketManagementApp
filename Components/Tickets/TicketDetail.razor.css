@@ -1,0 +1,231 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Detail Panel */
+.ticket-detail-panel {
+    background: white;
+    width: 500px;
+    max-width: 90vw;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Panel Header */
+.panel-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.panel-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #718096;
+    cursor: pointer;
+    padding: 0.25rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background: #f7fafc;
+    color: #2d3748;
+}
+
+/* Panel Content */
+.panel-content {
+    padding: 1.5rem;
+}
+
+.detail-section {
+    margin-bottom: 1.5rem;
+}
+
+.detail-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.detail-value {
+    color: #4a5568;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.detail-title {
+    color: #1a202c;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.detail-description {
+    color: #2d3748;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Status Buttons */
+.status-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.status-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 100px;
+}
+
+.status-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.status-btn-open {
+    background: white;
+    border-color: #48bb78;
+    color: #48bb78;
+}
+
+.status-btn-open:hover:not(:disabled) {
+    background: #48bb78;
+    color: white;
+}
+
+.status-btn-open.active {
+    background: #48bb78;
+    color: white;
+}
+
+.status-btn-progress {
+    background: white;
+    border-color: #ed8936;
+    color: #ed8936;
+}
+
+.status-btn-progress:hover:not(:disabled) {
+    background: #ed8936;
+    color: white;
+}
+
+.status-btn-progress.active {
+    background: #ed8936;
+    color: white;
+}
+
+.status-btn-closed {
+    background: white;
+    border-color: #a0aec0;
+    color: #a0aec0;
+}
+
+.status-btn-closed:hover:not(:disabled) {
+    background: #a0aec0;
+    color: white;
+}
+
+.status-btn-closed.active {
+    background: #a0aec0;
+    color: white;
+}
+
+.updating-text {
+    margin-top: 0.5rem;
+    color: #4299e1;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ticket-detail-panel {
+        width: 100vw;
+        max-width: 100vw;
+    }
+
+    .panel-header {
+        padding: 1rem;
+    }
+
+    .panel-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .panel-content {
+        padding: 1rem;
+    }
+
+    .status-buttons {
+        flex-direction: column;
+    }
+
+    .status-btn {
+        width: 100%;
+    }
+}

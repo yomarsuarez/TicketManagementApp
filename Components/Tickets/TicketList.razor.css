@@ -1,0 +1,134 @@
+.ticket-list {
+    display: grid;
+    gap: 1rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+/* Ticket Card */
+.ticket-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ticket-card:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.ticket-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+    flex: 1;
+}
+
+/* Status Badge */
+.ticket-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ticket-status.status-open {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.ticket-status.status-progress {
+    background: #feebc8;
+    color: #7c2d12;
+}
+
+.ticket-status.status-closed {
+    background: #e2e8f0;
+    color: #2d3748;
+}
+
+/* Description */
+.ticket-description {
+    color: #4a5568;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+.ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #a0aec0;
+}
+
+.ticket-id {
+    font-weight: 600;
+    color: #4299e1;
+}
+
+.ticket-date {
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ticket-card {
+        padding: 1rem;
+    }
+
+    .ticket-header {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .ticket-title {
+        font-size: 1rem;
+    }
+
+    .ticket-footer {
+        flex-direction: column;
+        align-items: start;
+        gap: 0.25rem;
+    }
+}

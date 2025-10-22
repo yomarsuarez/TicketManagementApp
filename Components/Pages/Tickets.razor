@@ -1,0 +1,155 @@
+@page "/tickets"
+@using TicketManagementApp.Models
+@using TicketManagementApp.Services
+@using TicketManagementApp.Components.Tickets
+@inject ITicketService TicketService
+@rendermode InteractiveServer
+
+<PageTitle>Tickets de Soporte</PageTitle>
+
+<div class="tickets-dashboard">
+    <div class="dashboard-header">
+        <h1>Sistema de Tickets de Soporte</h1>
+        <p class="subtitle">Gestiona y monitorea todos los tickets del equipo</p>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p>Cargando tickets...</p>
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="error-message">
+            <span class="error-icon">⚠</span>
+            <p>@errorMessage</p>
+        </div>
+    }
+    else
+    {
+        <div class="dashboard-content">
+            <div class="filters-section">
+                <TicketFilters
+                    OnFilterChanged="HandleFilterChange"
+                    OnSearchChanged="HandleSearchChange" />
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value">@allTickets.Count</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card stat-open">
+                        <div class="stat-value">@allTickets.Count(t => t.Status == "Abierto")</div>
+                        <div class="stat-label">Abiertos</div>
+                    </div>
+                    <div class="stat-card stat-progress">
+                        <div class="stat-value">@allTickets.Count(t => t.Status == "En progreso")</div>
+                        <div class="stat-label">En Progreso</div>
+                    </div>
+                    <div class="stat-card stat-closed">
+                        <div class="stat-value">@allTickets.Count(t => t.Status == "Cerrado")</div>
+                        <div class="stat-label">Cerrados</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tickets-container">
+                <TicketList
+                    Tickets="filteredTickets"
+                    OnTicketSelected="HandleTicketSelection" />
+            </div>
+        </div>
+    }
+</div>
+
+@if (selectedTicket != null)
+{
+    <TicketDetail
+        Ticket="selectedTicket"
+        OnClose="HandleCloseDetail"
+        OnStatusChanged="HandleStatusChanged" />
+}
+
+@code {
+    private List<Ticket> allTickets = new();
+    private List<Ticket> filteredTickets = new();
+    private Ticket? selectedTicket;
+    private bool isLoading = true;
+    private string? errorMessage;
+    private string currentFilter = "Todos";
+    private string currentSearch = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadTickets();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar los tickets: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadTickets()
+    {
+        allTickets = await TicketService.GetAllTicketsAsync();
+        ApplyFilters();
+    }
+
+    private void HandleFilterChange(string filter)
+    {
+        currentFilter = filter;
+        ApplyFilters();
+    }
+
+    private void HandleSearchChange(string search)
+    {
+        currentSearch = search;
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        filteredTickets = allTickets;
+
+        if (currentFilter != "Todos")
+        {
+            filteredTickets = filteredTickets.Where(t => t.Status == currentFilter).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(currentSearch))
+        {
+            filteredTickets = filteredTickets.Where(t =>
+                t.Title.Contains(currentSearch, StringComparison.OrdinalIgnoreCase) ||
+                t.Description.Contains(currentSearch, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+    }
+
+    private async Task HandleTicketSelection(int ticketId)
+    {
+        selectedTicket = await TicketService.GetTicketByIdAsync(ticketId);
+    }
+
+    private void HandleCloseDetail()
+    {
+        selectedTicket = null;
+    }
+
+    private async Task HandleStatusChanged((int id, string status) data)
+    {
+        var success = await TicketService.UpdateTicketStatusAsync(data.id, data.status);
+        if (success)
+        {
+            await LoadTickets();
+            selectedTicket = await TicketService.GetTicketByIdAsync(data.id);
+        }
+    }
+}
