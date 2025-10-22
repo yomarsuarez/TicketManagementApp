@@ -1,4 +1,4 @@
-# Guía Rápida de Inicio
+2# Guía Rápida de Inicio
 
 ## Ejecutar la Aplicación
 
